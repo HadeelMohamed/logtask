@@ -6,6 +6,8 @@ First we need to set up project ,please follow the next
 
 •	Create Database and the name should be "logparsingdb" or any name and change it from .env
 
+•	create folder NASA_access_log_Jul95 inside public   
+
 •	Place Nasalog file inside public/NASA_access_log_Jul95 
 
 •	Rename Nasa log file to  lookup
