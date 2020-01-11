@@ -14,8 +14,14 @@ class CreateLogsTable extends Migration
     public function up()
     {
         Schema::create('logs', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->timestamps();
+            $table->integer('id', true);
+            $table->string('ip' , 100);
+            $table->string('hit_date' , 100);
+            $table->string('url' , 500);
+            $table->integer('status');
+            $table->integer('bytes');
+
+
         });
     }
 

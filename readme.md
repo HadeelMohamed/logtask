@@ -1,74 +1,51 @@
-<p align="center"><img src="https://res.cloudinary.com/dtfbvvkyp/image/upload/v1566331377/laravel-logolockup-cmyk-red.svg" width="400"></p>
+First we need to set up project ,please follow the next steps
+•	Create folder for the project
+•	Then clone project in it
+•	Create Database and the name should be "logparsingdb" or any name and change it from .env
+•	Place Nasalog file inside public/NASA_access_log_Jul95 
+•	Rename Nasa log file to  lookup
+•	Composer Update
+•	Run the Project
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/d/total.svg" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/v/stable.svg" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://poser.pugx.org/laravel/framework/license.svg" alt="License"></a>
-</p>
 
-## About Laravel
+Then we  will run our urls  using Postman owe can run it local any approach you like more 
+1- Import file in DB by run “/uploadfiletest” when file finish importing will  message “finish “will show(Code allocate in UploadFileController)
+2- To return  unique visitors run “/api/json/visitors/unique” (Code allocate in ApisController)
+3-To return run number of hits for each url run” “/api/json/hits” (Code allocate in ApisController)
+3-To return run top hits, run” “/api/json/hits/top” (Code allocate in ApisController)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Finally Here is all Scenarios tried 
+1-First Scenario(get unique visitors)
+First run this sql query without adding any index
+SELECT ip , COUNT(*) As count FROM logs GROUP BY ip HAVING count = 1
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+Query time :2.44s seconds
+ Then add btree index on “ip” ,using btree index is better in this scenario 
 
-## Learning Laravel
+Query took 1.453 seconds. After indexing
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+2-Second Scenario(get hits of each url)
+First run this sql query without adding any index
+SELECT url , COUNT(*) As hits FROM logs GROUP BY url 
 
-## Laravel Sponsors
+Query time 51.11s seconds
+ Then add btree index on “url” ,using btree index is better in this scenario 
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[British Software Development](https://www.britishsoftware.co)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- [UserInsights](https://userinsights.com)
-- [Fragrantica](https://www.fragrantica.com)
-- [SOFTonSOFA](https://softonsofa.com/)
-- [User10](https://user10.com)
-- [Soumettre.fr](https://soumettre.fr/)
-- [CodeBrisk](https://codebrisk.com)
-- [1Forge](https://1forge.com)
-- [TECPRESSO](https://tecpresso.co.jp/)
-- [Runtime Converter](http://runtimeconverter.com/)
-- [WebL'Agence](https://weblagence.com/)
-- [Invoice Ninja](https://www.invoiceninja.com)
-- [iMi digital](https://www.imi-digital.de/)
-- [Earthlink](https://www.earthlink.ro/)
-- [Steadfast Collective](https://steadfastcollective.com/)
-- [We Are The Robots Inc.](https://watr.mx/)
-- [Understand.io](https://www.understand.io/)
-- [Abdel Elrafa](https://abdelelrafa.com)
-- [Hyper Host](https://hyper.host)
+ Query took  2.44 sseconds. After indexing
 
-## Contributing
+3-third Scenario(get top)
+First run this sql query without adding any index
+SELECT url , COUNT(*) As hits FROM logs GROUP BY url ORDER BY `hits` DESC
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Query time :  51.17s seconds
+ btree index is better in this scenario hashing indexing cant not use with order by
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+ Query took  5.32 seconds. After indexing
 
-## License
 
-The Laravel framework is open-source software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# Logparsingtask
-# logtask
+PS:My sql file allocate in DB Folder
+
